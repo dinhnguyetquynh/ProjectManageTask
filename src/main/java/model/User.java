@@ -50,6 +50,16 @@ public class User {
 		this.email = email;
 		this.manager = manager;
 	}
+	
+	
+	public User(String name, Gender gender, int age, String email, User manager) {
+	
+		this.name = name;
+		this.gender = gender;
+		this.age = age;
+		this.email = email;
+		this.manager = manager;
+	}
 
 	public int getId() {
 		return id;
