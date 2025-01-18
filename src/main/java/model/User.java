@@ -116,10 +116,10 @@ public class User {
 	public void setManagedUsers(List<User> managedUsers) {
 		this.managedUsers = managedUsers;
 	}
-	
-	
-	
 
-	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", gender=" + gender + ", age=" + age + ", email=" + email + "]";
+	}
 
 }

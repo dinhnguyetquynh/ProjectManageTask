@@ -59,6 +59,18 @@ public class Task {
 		this.project = project;
 		this.parentTask = parentTask;
 	}
+	
+	public Task(String title, String description, Priority priority, Date createAt, Date dueDate, Status status,
+			Project project, Task parentTask) {
+		this.title = title;
+		this.description = description;
+		this.priority = priority;
+		this.createAt = createAt;
+		this.dueDate = dueDate;
+		this.status = status;
+		this.project = project;
+		this.parentTask = parentTask;
+	}
 
 	public int getId() {
 		return id;

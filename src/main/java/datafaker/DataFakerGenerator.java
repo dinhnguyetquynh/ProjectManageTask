@@ -1,6 +1,8 @@
 package datafaker;
 
+import java.sql.Date;
 import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +11,10 @@ import java.util.regex.Pattern;
 
 import model.Account;
 import model.Gender;
+import model.Priority;
+import model.Project;
+import model.Status;
+import model.Task;
 import model.User;
 import net.datafaker.Faker;
 
@@ -18,7 +24,7 @@ public class DataFakerGenerator {
 	private static final Random random = new Random();
 
 	public DataFakerGenerator() {
-		this.faker = new Faker(new Locale("vi"));
+		this.faker = new Faker();
 	}
 
 	// Tạo dữ liệu giả cho người dùng
@@ -47,6 +53,24 @@ public class DataFakerGenerator {
 	    return withoutAccents.replaceAll("\\s+", "").toLowerCase();
 	}
 	
+	public Project generateProject() {
+        String title = faker.company().name();
+        String description = faker.lorem().sentence();
+        Date startDate = Date.valueOf(LocalDate.now().minusDays(random.nextInt(100)));
+        Date endDate = Date.valueOf(startDate.toLocalDate().plusDays(random.nextInt(200)));
 
+        return new Project(title, description, startDate, endDate);
+    }
+	
+	public Task generateTask(Project project, Task parentTask) {
+        String title = faker.job().title();
+        String description = faker.lorem().paragraph();
+        Priority priority = Priority.values()[random.nextInt(Priority.values().length)];
+        Date createAt = Date.valueOf(LocalDate.now().minusDays(random.nextInt(10)));
+        Date dueDate = Date.valueOf(createAt.toLocalDate().plusDays(random.nextInt(50)));
+        Status status = Status.values()[random.nextInt(Status.values().length)];
+
+        return new Task(title, description, priority, createAt, dueDate, status, project, parentTask);
+    }
 
 }

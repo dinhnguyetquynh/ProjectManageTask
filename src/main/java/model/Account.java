@@ -16,7 +16,7 @@ public class Account {
 	@Column(name="account_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name="account_name")
+	@Column(name="account_name", unique = true)
 	private String accountName;
 	private String password;
 	private String role;
