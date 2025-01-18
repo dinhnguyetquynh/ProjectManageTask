@@ -77,8 +77,15 @@ public class AccountDAO implements DAOInterface<Account> {
 
 	@Override
 	public List<Account> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		String query = "SELECT account FROM Account account WHERE account.manager.id is not null";
+		
+		try {
+			return em.createQuery(query, Account.class).getResultList();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

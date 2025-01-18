@@ -4,44 +4,45 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import model.Project;
+import model.Task;
 
-public class ProjectDAO implements DAOInterface<Project>{
-	
+public class TaskDAO implements DAOInterface<Task>{
 	private EntityManager em;
 	
-	public ProjectDAO(EntityManager em) {
+	public TaskDAO(EntityManager em) {
 		this.em = em;
 	}
 
 	@Override
-	public boolean add(Project project) {
+	public boolean add(Task task) {
+		// TODO Auto-generated method stub
 		EntityTransaction tr = em.getTransaction();
 		try {
 			tr.begin();
-			em.persist(project);
+			em.persist(task);
 			tr.commit();
 			return true;
 		} catch (Exception ex) {
 			// TODO: handle exception
-			tr.rollback();
 			ex.printStackTrace();
+			tr.rollback();
 		}
 		return false;
 	}
 
 	@Override
-	public boolean update(Project project) {
+	public boolean update(Task task) {
 		// TODO Auto-generated method stub
 		EntityTransaction tr = em.getTransaction();
 		try {
 			tr.begin();
-			em.merge(project);
+			em.merge(task);
 			tr.commit();
+			return true;
 		} catch (Exception ex) {
 			// TODO: handle exception
-			tr.rollback();
 			ex.printStackTrace();
+			tr.rollback();
 		}
 		return false;
 	}
@@ -50,33 +51,32 @@ public class ProjectDAO implements DAOInterface<Project>{
 	public boolean delete(String id) {
 		// TODO Auto-generated method stub
 		EntityTransaction tr = em.getTransaction();
-		try {
-			tr.begin();
-			Project project = em.find(Project.class, id);
-			if (project != null) {
-				em.remove(project);
-			}
-			tr.commit();
-		} catch (Exception ex) {
-			// TODO: handle exception
-			tr.rollback();
-			ex.printStackTrace();
-		}
+        try {
+            tr.begin();
+            Task task = em.find(Task.class, id);
+            if (task != null) {
+                em.remove(task);
+            }
+            tr.commit();
+        } catch (Exception ex) {
+            tr.rollback();
+            ex.printStackTrace();
+        }
 		return false;
 	}
 
 	@Override
-	public Project findById(String id) {
+	public Task findById(String id) {
 		// TODO Auto-generated method stub
-		return em.find(Project.class, id);
+		return em.find(Task.class, id);
 	}
 
 	@Override
-	public List<Project> getAll() {
-		String query = "SELECT project FROM Project project WHERE project.manager.id is not null";
-		
+	public List<Task> getAll() {
+		String query = "SELECT task FROM Task task WHERE task.manager.id is not null";
+				
 		try {
-			return em.createQuery(query, Project.class).getResultList();
+			return em.createQuery(query, Task.class).getResultList();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
