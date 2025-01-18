@@ -1,10 +1,12 @@
 package dao;
 
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Account;
 
-public class AccountDAO {
+public class AccountDAO implements DAOInterface<Account> {
 	
 	private EntityManager em;
 
@@ -12,7 +14,7 @@ public class AccountDAO {
         this.em = em;
     }
     
-    public boolean addAccount(Account account) {
+    public boolean add(Account account) {
     	EntityTransaction tr = em.getTransaction();
         try{
             tr.begin();
@@ -27,7 +29,7 @@ public class AccountDAO {
     	return false;
     }
     
-    public boolean updateClazz(Account account){
+    public boolean update(Account account){
         EntityTransaction tr = em.getTransaction();
         try{
             tr.begin();
@@ -41,7 +43,7 @@ public class AccountDAO {
         return false;
     }
     
-    public boolean deleteAccount(String id){
+    public boolean delete(String id){
         EntityTransaction tr = em.getTransaction();
         try{
             tr.begin();
@@ -56,7 +58,7 @@ public class AccountDAO {
         return false;
     }
     
-    public Account findAccountById(String id){
+    public Account findById(String id){
         return em.find(Account.class, id);
     }
     
@@ -72,5 +74,11 @@ public class AccountDAO {
             return null; 
         }
     }
+
+	@Override
+	public List<Account> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
