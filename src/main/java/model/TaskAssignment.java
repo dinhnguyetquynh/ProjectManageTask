@@ -16,7 +16,7 @@ public class TaskAssignment {
 	@JoinColumn(name="task_id")
 	private Task task;
 	
-	@Id
+	@Id 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="employee_id")
 	private User employee;

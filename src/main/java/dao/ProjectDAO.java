@@ -8,7 +8,7 @@ import model.Project;
 
 public class ProjectDAO implements DAOInterface<Project>{
 	
-	private EntityManager em;
+	private EntityManager em; 
 	
 	public ProjectDAO(EntityManager em) {
 		this.em = em;

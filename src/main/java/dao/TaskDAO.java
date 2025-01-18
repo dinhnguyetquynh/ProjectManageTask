@@ -9,7 +9,7 @@ import model.Task;
 public class TaskDAO implements DAOInterface<Task>{
 	private EntityManager em;
 	
-	public TaskDAO(EntityManager em) {
+	public TaskDAO(EntityManager em) { 
 		this.em = em;
 	}
 
@@ -29,6 +29,7 @@ public class TaskDAO implements DAOInterface<Task>{
 		}
 		return false;
 	}
+
 
 	@Override
 	public boolean update(Task task) {

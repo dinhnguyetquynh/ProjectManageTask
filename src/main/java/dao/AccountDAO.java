@@ -9,7 +9,7 @@ import model.Account;
 public class AccountDAO implements DAOInterface<Account> {
 	
 	private EntityManager em;
-
+ 
     public AccountDAO(EntityManager em){
         this.em = em;
     }

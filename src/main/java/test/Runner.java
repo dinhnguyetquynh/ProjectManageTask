@@ -16,7 +16,7 @@ import model.TaskAssignment;
 import model.User;
 import model.UserProject;
 import net.datafaker.Faker;
-
+ 
 public class Runner {
 	public static void main(String[] args) {
 		EntityManager em = Persistence.createEntityManagerFactory("task").createEntityManager();
@@ -25,6 +25,7 @@ public class Runner {
 		Faker faker = new Faker(new Locale("vi"));
 		DataFakerGenerator datafaker = new DataFakerGenerator();
 		try {
+			
 			tr.begin();
 			// tạo quản lí
 			User quanli = datafaker.generateFakeUsers();

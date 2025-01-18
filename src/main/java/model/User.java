@@ -41,6 +41,7 @@ public class User {
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	public User(int id, String name, Gender gender, int age, String email, User manager) {
 		this.id = id;
@@ -50,6 +51,7 @@ public class User {
 		this.email = email;
 		this.manager = manager;
 	}
+	
 	
 	
 	public User(String name, Gender gender, int age, String email, User manager) {

@@ -17,7 +17,7 @@ public class UserProject {
 	private User user;
 	
 	@Id
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL) 
 	@JoinColumn(name="project_id")
 	private Project project;
 	
