@@ -6,10 +6,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Task;
 
-public class TaskDAO implements DAOInterface<Task>{
+public class TaskDAO implements DAOInterface<Task> {
 	private EntityManager em;
-	
-	public TaskDAO(EntityManager em) { 
+
+	public TaskDAO(EntityManager em) {
 		this.em = em;
 	}
 
@@ -29,7 +29,6 @@ public class TaskDAO implements DAOInterface<Task>{
 		}
 		return false;
 	}
-
 
 	@Override
 	public boolean update(Task task) {
@@ -52,17 +51,17 @@ public class TaskDAO implements DAOInterface<Task>{
 	public boolean delete(String id) {
 		// TODO Auto-generated method stub
 		EntityTransaction tr = em.getTransaction();
-        try {
-            tr.begin();
-            Task task = em.find(Task.class, id);
-            if (task != null) {
-                em.remove(task);
-            }
-            tr.commit();
-        } catch (Exception ex) {
-            tr.rollback();
-            ex.printStackTrace();
-        }
+		try {
+			tr.begin();
+			Task task = em.find(Task.class, id);
+			if (task != null) {
+				em.remove(task);
+			}
+			tr.commit();
+		} catch (Exception ex) {
+			tr.rollback();
+			ex.printStackTrace();
+		}
 		return false;
 	}
 
@@ -75,7 +74,7 @@ public class TaskDAO implements DAOInterface<Task>{
 	@Override
 	public List<Task> getAll() {
 		String query = "SELECT task FROM Task task WHERE task.manager.id is not null";
-				
+
 		try {
 			return em.createQuery(query, Task.class).getResultList();
 		} catch (Exception e) {
@@ -83,6 +82,11 @@ public class TaskDAO implements DAOInterface<Task>{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public void delete(Task taskToDelete) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

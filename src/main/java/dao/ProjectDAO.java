@@ -6,10 +6,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Project;
 
-public class ProjectDAO implements DAOInterface<Project>{
-	
-	private EntityManager em; 
-	
+public class ProjectDAO implements DAOInterface<Project> {
+
+	private EntityManager em;
+
 	public ProjectDAO(EntityManager em) {
 		this.em = em;
 	}
@@ -74,7 +74,7 @@ public class ProjectDAO implements DAOInterface<Project>{
 	@Override
 	public List<Project> getAll() {
 		String query = "SELECT project FROM Project project WHERE project.manager.id is not null";
-		
+
 		try {
 			return em.createQuery(query, Project.class).getResultList();
 		} catch (Exception e) {
@@ -82,6 +82,11 @@ public class ProjectDAO implements DAOInterface<Project>{
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public void delete(Project projectToDelete) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

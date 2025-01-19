@@ -8,7 +8,7 @@ import model.User;
 
 public class UserDAO implements DAOInterface<User> {
 
-	private EntityManager em; 
+	private EntityManager em;
 
 	public UserDAO(EntityManager em) {
 		this.em = em;
@@ -25,7 +25,7 @@ public class UserDAO implements DAOInterface<User> {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			tr.rollback();
-			
+
 		}
 		return false;
 	}
@@ -79,5 +79,11 @@ public class UserDAO implements DAOInterface<User> {
 			return null;
 		}
 	}
+
+	public void delete(User userToDelete) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

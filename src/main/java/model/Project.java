@@ -72,6 +72,14 @@ public class Project {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	public void setManager(User managerForProject) {
+		// TODO Auto-generated method stub
+		
+	}
+	public Object getManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 
