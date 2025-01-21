@@ -3,9 +3,9 @@ package test;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-
 import datafaker.DataFakerGenerator;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import model.Account;
@@ -16,11 +16,13 @@ import model.TaskAssignment;
 import model.User;
 import model.UserProject;
 import net.datafaker.Faker;
+import service.AccountService;
+import util.JPAUtil;
 
 public class Runner {
 	public static void main(String[] args) {
-		EntityManager em = Persistence.createEntityManagerFactory("task").createEntityManager();
-
+	//TẠO DỮ LIỆU GIẢ
+		EntityManager em = JPAUtil.getEntityManager();
 		EntityTransaction tr = em.getTransaction();
 		Faker faker = new Faker(new Locale("vi"));
 		DataFakerGenerator datafaker = new DataFakerGenerator();
@@ -102,6 +104,7 @@ public class Runner {
 		} finally {
 			em.close();
 		}
+		
 
 	}
 

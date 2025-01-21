@@ -6,7 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.User;
 
-public class UserDAO implements DAOInterface<User> {
+public class UserDAO  implements DAOInterface<User>{
 	
 	private EntityManager em;
 
@@ -15,66 +15,41 @@ public class UserDAO implements DAOInterface<User> {
     }
 
 	@Override
-	public boolean add(User user) {
-		EntityTransaction tr = em.getTransaction();
-        try{
-            tr.begin();
-            em.persist(user);
-            tr.commit();
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            tr.rollback();
-        }
-		return false;
+	public void addUser(User t) {
+		em.persist(t);
+		
 	}
 
 	@Override
-	public boolean update(User user) {
-		EntityTransaction tr = em.getTransaction();
-        try{
-            tr.begin();
-            em.merge(user);
-            tr.commit();
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            tr.rollback();
-        }
-		return false;
+	public void deleteUser(User t) {
+		// TODO Auto-generated method stub
+		em.remove(t);
 	}
 
 	@Override
-	public boolean delete(String id) {
-		EntityTransaction tr = em.getTransaction();
-        try{
-            tr.begin();
-            User user = em.find(User.class, id);
-            em.remove(user);
-            tr.commit();
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-            tr.rollback();
-        }
-		return false;
+	public void updateUser(User t) {
+		// TODO Auto-generated method stub
+		em.merge(t);
 	}
 
 	@Override
-	public User findById(String id) {
-		return em.find(User.class, id);
+	public User findUserById(int id) {
+		return em.find(User.class,id);
 	}
 
 	@Override
 	public List<User> getAll() {
-		String query = "SELECT user FROM User user WHERE user.manager.id is not null";
-
-        try {
-            return em.createQuery(query, User.class)
-                    .getResultList();
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return null; 
-        }
+		// TODO Auto-generated method stub
+		String query ="SELECT u FROM User u";
+		return em.createQuery(query, User.class).getResultList();
 	}
+
+	
+//	public void addNewUser(User user) {
+//		em.persist(user);
+//	}
+//	
+//	public User findUserById(int id) {
+//		return em.find(User.class,id);
+//	}
 }
