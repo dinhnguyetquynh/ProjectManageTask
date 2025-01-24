@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface DAOInterface<T> {
 	
-	public void addUser(T t);
-	public void deleteUser(T t);
-	public void updateUser(T t);
-	public T findUserById(int id);
+	public boolean add(T t);
+	public boolean delete(T t);
+	public boolean update(T t);
+	public T findById(int id);
 	public List<T> getAll();
 }

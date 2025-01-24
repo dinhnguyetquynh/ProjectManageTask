@@ -37,6 +37,15 @@ public class Account {
 		this.user = user;
 	}
 	
+	
+	public Account(String accountName, String password, String role, User user) {
+		super();
+		this.accountName = accountName;
+		this.password = password;
+		this.role = role;
+		this.user = user;
+	}
+
 	public int getId() {
 		return id;
 	}

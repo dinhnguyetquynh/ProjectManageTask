@@ -22,7 +22,12 @@ public class AccountService implements ServiceInterface<Account>{
 
 	@Override
 	public void add(Account t) {
-		// TODO Auto-generated method stub
+		boolean kq = accDao.add(t);
+		if(kq==true) {
+			System.out.println("Tạo account thành công");
+		}else {
+			System.out.println("Lỗi khi tạo account");
+		}
 		
 	}
 
@@ -30,7 +35,13 @@ public class AccountService implements ServiceInterface<Account>{
 
 	@Override
 	public void update(Account t) {
-		// TODO Auto-generated method stub
+		boolean kq = accDao.update(t);
+		if(kq==true) {
+			System.out.println("Cập nhật account thành công");
+		}else {
+			System.out.println("Lỗi khi cập nhật account");
+		}
+		
 		
 	}
 
@@ -38,7 +49,13 @@ public class AccountService implements ServiceInterface<Account>{
 
 	@Override
 	public void delete(Account t) {
-		// TODO Auto-generated method stub
+		boolean kq = accDao.delete(t);
+		if(kq==true) {
+			System.out.println("Xóa account thành công");
+		}else {
+			System.out.println("Lỗi khi xóa account");
+		}
+		
 		
 	}
 
@@ -46,16 +63,39 @@ public class AccountService implements ServiceInterface<Account>{
 
 	@Override
 	public Account findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Account acc = accDao.findById(id);
+		if(acc!=null) {
+			System.out.println("Tìm thấy account");
+			return acc;
+		}else {
+			System.out.println("Không tìm được account");
+			return null;
+		}
 	}
 
 
 
 	@Override
 	public List<Account> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Account> list = accDao.getAll();
+		if(list!=null) {
+			System.out.println("Lấy danh sách account thành công");
+			return list;
+		}else {
+			System.out.println("Lỗi không lấy được danh sách account");
+			return null;
+		}
+	}
+	
+	public Account findAccountByUserName(String username) {
+		Account acc = accDao.findAccountByUsername(username);
+		if(acc!=null) {
+			System.out.println("Đã tìm thấy account");
+			return acc;
+		}else {
+			System.out.println("Lỗi không tìm thấy account");
+			return null;
+		}
 	}
 	
 	

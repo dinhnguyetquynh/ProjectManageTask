@@ -4,23 +4,21 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import model.User;
+import model.Task;
 
-public class UserDAO implements DAOInterface<User> {
-
+public class TaskDAO implements DAOInterface<Task>{
 	private EntityManager em;
-
-	public UserDAO(EntityManager em) {
+	
+	public TaskDAO(EntityManager em) {
 		this.em = em;
 	}
 
 	@Override
-	public boolean add(User user) {
+	public boolean add(Task t) {
 		EntityTransaction tr = em.getTransaction();
 		try {
-			
 			tr.begin();
-			em.persist(user);
+			em.persist(t);
 			tr.commit();
 			return true;
 		} catch (Exception ex) {
@@ -31,11 +29,11 @@ public class UserDAO implements DAOInterface<User> {
 	}
 
 	@Override
-	public boolean update(User user) {
+	public boolean delete(Task t) {
 		EntityTransaction tr = em.getTransaction();
 		try {
 			tr.begin();
-			em.merge(user);
+			em.remove(t);
 			tr.commit();
 			return true;
 		} catch (Exception ex) {
@@ -46,46 +44,45 @@ public class UserDAO implements DAOInterface<User> {
 	}
 
 	@Override
-	public boolean delete(User user) {
+	public boolean update(Task t) {
 		EntityTransaction tr = em.getTransaction();
 		try {
 			tr.begin();
-			em.remove(user);
+			em.merge(t);
 			tr.commit();
 			return true;
 		} catch (Exception ex) {
 			tr.rollback();
 			ex.printStackTrace();
 			return false;
+		}
+	}
+
+	@Override
+	public Task findById(int id) {
+		EntityTransaction tr = em.getTransaction();
+		Task t = null;
+		try {
+			tr.begin();
+			t = em.find(Task.class, id);
+			tr.commit();
+			return t;
+		} catch (Exception e) {
+			tr.rollback();
+			e.printStackTrace();
+			return null;
 		}
 		
 	}
 
 	@Override
-	public User findById(int id) {
-		EntityTransaction tr = em.getTransaction(); 
-		User u = null;
+	public List<Task> getAll() {
+		EntityTransaction tr = em.getTransaction();
+		String query = "SELECT t FROM Task t";
+		List<Task> list = null;
 		try {
 			tr.begin();
-			u=em.find(User.class, id);
-			tr.commit();
-			return u;
-		} catch (Exception e) {
-			tr.rollback();
-			e.printStackTrace();
-			return null;
-			
-		}
-	}
-
-	@Override
-	public List<User> getAll() {
-		EntityTransaction tr = em.getTransaction(); 
-		String query = "SELECT user FROM User user WHERE user.manager.id is not null";
-		List<User> list = null;
-		try {
-			tr.begin();
-			list= em.createQuery(query, User.class).getResultList();
+			list= em.createQuery(query,Task.class).getResultList();
 			tr.commit();
 			return list;
 		} catch (Exception e) {
@@ -94,8 +91,10 @@ public class UserDAO implements DAOInterface<User> {
 			return null;
 		}
 	}
-
-	//Nên viết thêm tìm user bằng tên
+	
+	//Nên viết thêm tìm task bằng tên
 
 	
+	
+
 }

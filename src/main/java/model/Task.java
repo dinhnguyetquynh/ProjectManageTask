@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,8 @@ public class Task {
 	private String title;
 	private String description;
 	private Priority priority;
-	private Date createAt;
-	private Date dueDate;
+	private LocalDateTime createAt;
+	private LocalDateTime dueDate;
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	@ManyToOne
@@ -46,103 +48,107 @@ public class Task {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Task(int id, String title, String description, Priority priority, Date createAt, Date dueDate, Status status,
-			Project project, Task parentTask) {
-		
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.priority = priority;
-		this.createAt = createAt;
-		this.dueDate = dueDate;
-		this.status = status;
-		this.project = project;
-		this.parentTask = parentTask;
-	}
+public Task(int id, String title, String description, Priority priority, LocalDateTime createAt, LocalDateTime dueDate,
+		Status status, Project project, Task parentTask) {
 	
-	public Task(String title, String description, Priority priority, Date createAt, Date dueDate, Status status,
-			Project project, Task parentTask) {
-		this.title = title;
-		this.description = description;
-		this.priority = priority;
-		this.createAt = createAt;
-		this.dueDate = dueDate;
-		this.status = status;
-		this.project = project;
-		this.parentTask = parentTask;
-	}
+	this.id = id;
+	this.title = title;
+	this.description = description;
+	this.priority = priority;
+	this.createAt = createAt;
+	this.dueDate = dueDate;
+	this.status = status;
+	this.project = project;
+	this.parentTask = parentTask;
+}
 
-	public int getId() {
-		return id;
-	}
+public Task(String title, String description, Priority priority, LocalDateTime createAt, LocalDateTime dueDate,
+		Status status, Project project, Task parentTask) {
+	
+	this.title = title;
+	this.description = description;
+	this.priority = priority;
+	this.createAt = createAt;
+	this.dueDate = dueDate;
+	this.status = status;
+	this.project = project;
+	this.parentTask = parentTask;
+}
 
-	public void setId(int id) {
-		this.id = id;
-	}
+public int getId() {
+	return id;
+}
 
-	public String getTitle() {
-		return title;
-	}
+public void setId(int id) {
+	this.id = id;
+}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+public String getTitle() {
+	return title;
+}
 
-	public String getDescription() {
-		return description;
-	}
+public void setTitle(String title) {
+	this.title = title;
+}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+public String getDescription() {
+	return description;
+}
 
-	public Priority getPriority() {
-		return priority;
-	}
+public void setDescription(String description) {
+	this.description = description;
+}
 
-	public void setPriority(Priority priority) {
-		this.priority = priority;
-	}
+public Priority getPriority() {
+	return priority;
+}
 
-	public Date getCreateAt() {
-		return createAt;
-	}
+public void setPriority(Priority priority) {
+	this.priority = priority;
+}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
-	}
+public LocalDateTime getCreateAt() {
+	return createAt;
+}
 
-	public Date getDueDate() {
-		return dueDate;
-	}
+public void setCreateAt(LocalDateTime createAt) {
+	this.createAt = createAt;
+}
 
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
-	}
+public LocalDateTime getDueDate() {
+	return dueDate;
+}
 
-	public Status getStatus() {
-		return status;
-	}
+public void setDueDate(LocalDateTime dueDate) {
+	this.dueDate = dueDate;
+}
 
-	public void setStatus(Status status) {
-		this.status = status;
-	}
+public Status getStatus() {
+	return status;
+}
 
-	public Project getProject() {
-		return project;
-	}
+public void setStatus(Status status) {
+	this.status = status;
+}
 
-	public void setProject(Project project) {
-		this.project = project;
-	}
+public Project getProject() {
+	return project;
+}
 
-	public Task getParentTask() {
-		return parentTask;
-	}
+public void setProject(Project project) {
+	this.project = project;
+}
 
-	public void setParentTask(Task parentTask) {
-		this.parentTask = parentTask;
-	}
+public Task getParentTask() {
+	return parentTask;
+}
+
+public void setParentTask(Task parentTask) {
+	this.parentTask = parentTask;
+}
+
+	
+
     
 	
 }

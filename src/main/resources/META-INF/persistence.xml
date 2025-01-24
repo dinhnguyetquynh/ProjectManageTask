@@ -4,15 +4,15 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
     <persistence-unit name="task">
-	<class>model.Account</class>
-	<class>model.Gender</class>
-	<class>model.Priority</class>
-	<class>model.Project</class>
-	<class>model.Status</class>
-	<class>model.Task</class>
-	<class>model.TaskAssignment</class>
-	<class>model.User</class>
-	<class>model.UserProject</class>
+		    <class>model.Account</class>
+		    <class>model.User</class>
+		    <class>model.Gender</class>
+		    <class>model.Priority</class>
+		    <class>model.Status</class>
+		    <class>model.Task</class>
+		    <class>model.TaskAssignment</class>
+		    <class>model.UserProject</class>
+		    <class>model.Project</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver"
                       value="org.mariadb.jdbc.Driver" />
@@ -25,7 +25,7 @@
                       value="org.hibernate.dialect.MariaDBDialect" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
         </properties>
     </persistence-unit>
 </persistence>
