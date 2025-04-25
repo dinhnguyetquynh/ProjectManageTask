@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,7 +12,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 @Entity
 @Table(name="task_assignments")
-public class TaskAssignment {
+public class TaskAssignment implements Serializable {
+	private static final long serialVersionUID = 1L;
 	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="task_id")

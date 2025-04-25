@@ -81,7 +81,7 @@ public class ProjectDAO implements DAOInterface<Project>{
 		EntityTransaction tr = em.getTransaction();
 		List<Project> list = null;
 		
-		String query = "SELECT project FROM Project project WHERE project.manager.id is not null";
+		String query = "SELECT p FROM Project p";
 		try {
 			tr.begin();
 			list= em.createQuery(query, Project.class).getResultList();

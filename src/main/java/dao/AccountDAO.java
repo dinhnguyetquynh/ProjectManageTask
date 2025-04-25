@@ -115,6 +115,18 @@ public class AccountDAO implements DAOInterface<Account> {
             return null; 
         }
     }
+	 public Account findAccountToLogin(String username, String password){
+	    	String query = "SELECT acc FROM Account acc WHERE acc.accountName = :username and acc.password = :password";
+
+	        try {
+	            return em.createQuery(query, Account.class)
+	                    .setParameter("username", username)
+	                    .setParameter("password", password)
+	                    .getSingleResult();
+	        } catch (Exception e) {
+	            return null; 
+	        }
+	    }
 
    
 

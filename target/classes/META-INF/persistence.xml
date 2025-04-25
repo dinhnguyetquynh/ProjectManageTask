@@ -20,7 +20,7 @@
                       value="jdbc:mariadb://localhost:3306/manage_tasks" />
             <property name="jakarta.persistence.jdbc.user" value="root" />
             <property name="jakarta.persistence.jdbc.password"
-                      value="root" />
+                      value="root"/>
             <property name="jakarta.persistence.jdbc.dialect"
                       value="org.hibernate.dialect.MariaDBDialect" />
             <property name="hibernate.show_sql" value="true" />
