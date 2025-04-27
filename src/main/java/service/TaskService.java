@@ -74,5 +74,17 @@ public class TaskService implements ServiceInterface<Task>{
 		}
 	}
 	
+	public List<Task> findByProjectId(int id){
+		List<Task> list = taskDao.findByProjectId(id);
+		
+		if(list!=null) {
+			System.out.println("Lấy ds task theo projectId thành công");
+			return list;
+		}else {
+			System.out.println("Lấy ds task theo projectId  thất bại");
+			return null;
+		}
+	}
+	
 
 }

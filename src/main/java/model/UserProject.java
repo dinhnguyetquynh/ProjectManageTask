@@ -15,12 +15,12 @@ import lombok.EqualsAndHashCode;
 public class UserProject implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
 	
 	@Id
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="project_id")
 	private Project project;
 	

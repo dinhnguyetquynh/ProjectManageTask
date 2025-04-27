@@ -38,7 +38,7 @@ public class User implements Serializable{
 	private User manager;
 	
 	@OneToMany(mappedBy = "manager")
-	private List<User> managedUsers = new ArrayList<User>(); 
+	transient private List<User> managedUsers = new ArrayList<User>(); 
 	
 	public User() {
 		// TODO Auto-generated constructor stub

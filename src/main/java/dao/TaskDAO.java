@@ -92,8 +92,24 @@ public class TaskDAO implements DAOInterface<Task>{
 		}
 	}
 	
-	//Nên viết thêm tìm task bằng tên
-
+	//Tìm task bằng tên project
+	public List<Task> findByProjectId(int projectId) {
+	    EntityTransaction tr = em.getTransaction();
+	    List<Task> list = null;
+	    try {
+	        tr.begin();
+	        String query = "SELECT t FROM Task t WHERE t.project.id = :projectId";
+	        list = em.createQuery(query, Task.class)
+	                 .setParameter("projectId", projectId)
+	                 .getResultList();
+	        tr.commit();
+	        return list;
+	    } catch (Exception e) {
+	        tr.rollback();
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
 	
 	
 

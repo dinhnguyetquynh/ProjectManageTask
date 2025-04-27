@@ -78,23 +78,64 @@ public class ProjectDAO implements DAOInterface<Project>{
 
 	@Override
 	public List<Project> getAll() {
-		EntityTransaction tr = em.getTransaction();
-		List<Project> list = null;
-		
-		String query = "SELECT p FROM Project p";
-		try {
-			tr.begin();
-			list= em.createQuery(query, Project.class).getResultList();
-			tr.commit();
-			return list;
-		} catch (Exception e) {
-			tr.rollback();
-			e.printStackTrace();
-			return null;
-		}
+		return null;
 	}
 	
-	//Viết thêm chức năng tìm project bằng tên
+	public List<Project> getAllByUserId(int userId) {
+		 EntityTransaction tr = em.getTransaction();
+		    List<Project> list = null;
+
+		    // JPQL để lấy các project mà user có userId tham gia
+		    String query = "SELECT DISTINCT up.project FROM UserProject up WHERE up.user.id = :userId";
+
+		    try {
+		        tr.begin();
+		        list = em.createQuery(query, Project.class)
+		                .setParameter("userId", userId)
+		                .getResultList();
+
+		        // Đếm số lượng user tham gia cho mỗi project
+		        for (Project project : list) {
+		            Long count = em.createQuery(
+		                    "SELECT COUNT(up) FROM UserProject up WHERE up.project.id = :projectId", Long.class)
+		                    .setParameter("projectId", project.getId())
+		                    .getSingleResult();
+
+		            project.setNumberUser(count.intValue()); // set vào trường @Transient
+		        }
+
+		        tr.commit();
+		        return list;
+
+		    } catch (Exception e) {
+		        tr.rollback();
+		        e.printStackTrace();
+		        return null;
+		    }
+	}
+	
+	public void deleteProject(int projectId) {
+		EntityTransaction tr = em.getTransaction();
+		try {
+	        tr.begin();
+
+	        // Xoá dữ liệu liên quan ở user_project trước (native query hoặc JPQL)
+	        em.createQuery("DELETE FROM UserProject up WHERE up.project.id = :id")
+	            .setParameter("id", projectId)
+	            .executeUpdate();
+
+	        // Xoá project
+	        Project pro = em.find(Project.class, projectId);
+	        if (pro != null) {
+	            em.remove(pro);
+	        }
+
+	        tr.commit();
+	    } catch (Exception e) {
+	        tr.rollback();
+	        e.printStackTrace();
+	    }
+	}
 	
 
 }

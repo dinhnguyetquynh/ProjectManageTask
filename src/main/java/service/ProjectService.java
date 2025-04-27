@@ -73,5 +73,25 @@ public class ProjectService implements ServiceInterface<Project>{
 			return null;
 		}
 	}
+	
+	public List<Project> getAllByUser(int userId){
+		List<Project> lists = pDao.getAllByUserId(userId);
+		if(lists!=null) {
+			System.out.println("Lấy danh sách project thành công");
+			return lists;
+		}else {
+			System.out.println("Lấy danh sách project thất bại");
+			return null;
+		}
+	}
+	
+	public void deleteProjectById(int id) {
+		try {
+			pDao.deleteProject(id);
+		} catch (Exception e) {
+			System.out.println("Xóa project thất bại");
+		}
+		
+	}
 
 }

@@ -149,6 +149,13 @@ public void setParentTask(Task parentTask) {
 	this.parentTask = parentTask;
 }
 
+@Override
+public String toString() {
+	return "Task [id=" + id + ", title=" + title + ", description=" + description + ", priority=" + priority
+			+ ", createAt=" + createAt + ", dueDate=" + dueDate + ", status=" + status + ", project=" + project
+			+ ", parentTask=" + parentTask + "]";
+}
+
 	
 
     

@@ -2,6 +2,7 @@
 package service;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
@@ -10,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.swing.JTextArea;
@@ -24,7 +26,10 @@ import jakarta.persistence.Persistence;
 import model.Account;
 import model.Project;
 import model.Request;
+import model.Task;
 import model.User;
+import net.datafaker.idnumbers.SouthAfricanIdNumber;
+import util.GsonHelper;
 
 // Xử lý tất cả truyền nhận dữ liệu giữa client và server tại đây
 public class ClientHandler extends Thread {
@@ -34,6 +39,7 @@ public class ClientHandler extends Thread {
 	private Account account;
 	private BufferedReader in;
 	private PrintWriter out;
+	private DataOutputStream dos;
 
 	public ClientHandler(Socket socket, JTextArea textArea) {
 		this.clientSocket = socket;
@@ -46,6 +52,7 @@ public class ClientHandler extends Thread {
 		try {
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	        out = new PrintWriter(clientSocket.getOutputStream(), true);
+	        dos = new DataOutputStream(clientSocket.getOutputStream());
 			while (true) { // Lắng nghe liên tục
 				// Nếu nhận được dữ liệu từ client (Request)
 				String request = in.readLine();
@@ -148,7 +155,7 @@ public class ClientHandler extends Thread {
 		}
 	}
 
-	private void handleRequest(String message, JsonObject joData) {
+	private void handleRequest(String message, JsonObject joData) throws IOException {
 		switch (message) {
 		case "LOGIN":
 			if (joData != null) {
@@ -183,7 +190,15 @@ public class ClientHandler extends Thread {
 		case "LIST_PROJECT":
 			Gson gson = new Gson();
 			ProjectService ps = new ProjectService(em);
-			List<Project> list = ps.getAll();
+			List<Project> list = ps.getAllByUser(account.getUser().getId());
+			if(list!=null) {
+				for(Project pro:list) {
+					System.out.println("Project tim được là: "+pro.toString());
+				}
+			}else {
+				System.out.println("Danh sach project rong");
+			}
+			
 			String listProject = gson.toJson(list);
 			textArea.append(listProject);
 			
@@ -192,7 +207,39 @@ public class ClientHandler extends Thread {
 			textArea.append(res);
 			out.println(res);
 			out.flush();
-		
+			break;
+		case "DELETE_PROJECT":
+			System.out.println("DELETE_PROJECT");
+			gson = new Gson();
+			int projectId = joData.getInt("projectId");
+			System.out.println("PROJECT ID LÀ:"+projectId);
+			ProjectService sv = new ProjectService(em);
+			sv.deleteProjectById(projectId);
+			
+			List<Project> updateProject = sv.getAllByUser(account.getUser().getId());
+			String listProject2 = gson.toJson(updateProject);
+			String res2 = ServiceMessage.getInstance().createMessage("LIST_PROJECT",
+					ServiceMessage.getInstance().createObjectJson("listproject", listProject2));
+			out.println(res2);
+			out.flush();
+			break;
+		case "LIST_TASKS":
+			int proId = joData.getInt("projectId");
+			TaskService taskSV = new TaskService(em);
+			List<Task> listTask = taskSV.findByProjectId(proId);
+			for(Task t : listTask) {
+				System.out.println("Task is:"+t);
+			}
+			
+			String listTaskJson = GsonHelper.toJson(listTask);
+			
+			String res3 = ServiceMessage.getInstance().createMessage("LIST_TASKS",ServiceMessage.getInstance().createObjectJson("listTask", listTaskJson));
+			System.out.println("Res3 được in ra la"+res3);
+			String compactJson = res3.replace("\n", "").replace("\r", ""); // Bỏ \n, \r nếu có
+			out.println(compactJson); // Gửi xong xuống dòng
+			out.flush();
+			break;
+			
 		}
 	}
 }
