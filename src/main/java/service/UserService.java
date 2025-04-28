@@ -9,15 +9,13 @@ public class UserService implements ServiceInterface<User>{
 	private UserDAO userDAO;
 	private EntityManager em;
 	
-	
-
 	public UserService(EntityManager em) {
 		this.em = em;
 		this.userDAO= new UserDAO(em);
 	}
 
 
-
+	// Thêm nhân viên 
 	@Override
 	public void add(User user) {
 		boolean add =userDAO.add(user);
@@ -29,7 +27,7 @@ public class UserService implements ServiceInterface<User>{
 	}
 
 
-
+	// Cập nhật nhân viên
 	@Override
 	public void update(User user) {
 		boolean update =userDAO.update(user);
@@ -42,7 +40,7 @@ public class UserService implements ServiceInterface<User>{
 	}
 
 
-
+	// Xóa nhân viên
 	@Override
 	public void delete(User user) {
 		boolean del =userDAO.delete(user);
@@ -56,7 +54,7 @@ public class UserService implements ServiceInterface<User>{
 	}
 
 
-
+	// Tìm kiếm nhân viên bằng ID
 	@Override
 	public User findById(int id) {
 		User user =  userDAO.findById(id);
@@ -70,7 +68,7 @@ public class UserService implements ServiceInterface<User>{
 	}
 
 
-
+	// Lấy danh sách nhân viên
 	@Override
 	public List<User> getAll() {
 		List<User> users =  userDAO.getAll();
@@ -83,6 +81,7 @@ public class UserService implements ServiceInterface<User>{
 		}
 	}
 	
+	// tìm danh danh sách user bằng Ids
 	public List<User> findListUserByIds(List<Integer> userIds){
 		return userDAO.findUsersByIds(userIds);
 	}
