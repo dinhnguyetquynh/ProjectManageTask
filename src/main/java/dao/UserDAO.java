@@ -14,6 +14,7 @@ public class UserDAO implements DAOInterface<User> {
 		this.em = em;
 	}
 
+	// thêm nhân viên
 	@Override
 	public boolean add(User user) {
 		EntityTransaction tr = em.getTransaction();
@@ -30,6 +31,7 @@ public class UserDAO implements DAOInterface<User> {
 		}
 	}
 
+	// cập nhật nhân viên
 	@Override
 	public boolean update(User user) {
 		EntityTransaction tr = em.getTransaction();
@@ -45,6 +47,7 @@ public class UserDAO implements DAOInterface<User> {
 		}
 	}
 
+	//xóa nhân viên
 	@Override
 	public boolean delete(User user) {
 		EntityTransaction tr = em.getTransaction();
@@ -61,6 +64,7 @@ public class UserDAO implements DAOInterface<User> {
 		
 	}
 
+	//tìm nhân viên bằng ID
 	@Override
 	public User findById(int id) {
 		EntityTransaction tr = em.getTransaction(); 
@@ -78,6 +82,7 @@ public class UserDAO implements DAOInterface<User> {
 		}
 	}
 
+	// lấy danh sách nhân viên
 	@Override
 	public List<User> getAll() {
 		EntityTransaction tr = em.getTransaction(); 
@@ -95,7 +100,7 @@ public class UserDAO implements DAOInterface<User> {
 		}
 	}
 
-	//Tìm user bằng list<ingteger> ids;
+	//Tìm nhân viên bằng list<ingteger> Ids
 	public List<User> findUsersByIds(List<Integer> selectedUserIds) {
 	    if (selectedUserIds == null || selectedUserIds.isEmpty()) {
 	        return null;
