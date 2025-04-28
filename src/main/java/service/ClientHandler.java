@@ -229,8 +229,29 @@ public class ClientHandler extends Thread {
 				String compactJson2 = res5.replace("\n", "").replace("\r", ""); // Bỏ \n, \r nếu có
 				out.println(compactJson2); // Gửi xong xuống dòng
 				out.flush();
+			break;
 			
-			    
+		case "DELETE_TASK":
+			System.out.println("Đã nhận được request xóa task từ client");
+			int taskId = joData.getInt("taskId");
+			TaskService taskService = new TaskService(em);
+			Task taskFounded=taskService.findById(taskId);
+			//Lấy projetcId ra
+			int projectID = taskFounded.getProject().getId();
+			boolean result = taskService.deleteTaskByTask(taskFounded);
+			System.out.println(result);
+			
+			//Sau khi xóa task xong, gửi lại listTask cho client bằng cách tìm listTask trong cơ sở dữ liệu bằng projectId
+			List<Task> tasksDel = taskService.findByProjectId(projectID);
+			
+			
+			String listTaskDel = GsonHelper.toJson(tasksDel);
+			
+			String res6 = ServiceMessage.getInstance().createMessage("LIST_TASKS",ServiceMessage.getInstance().createObjectJson("listTask", listTaskDel));
+			System.out.println("Res6 được in ra la"+res6);
+			String compactJson3 = res6.replace("\n", "").replace("\r", ""); // Bỏ \n, \r nếu có
+			out.println(compactJson3); // Gửi xong xuống dòng
+			out.flush();
 			
 			
 			break;

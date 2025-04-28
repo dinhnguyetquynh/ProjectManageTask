@@ -97,5 +97,15 @@ public class TaskService implements ServiceInterface<Task>{
 			return false;
 		}
 	}
-
+	
+	public boolean deleteTaskByTask(Task task) {
+		boolean ketqua = taskDao.delete(task);
+		if(ketqua==true) {
+			System.out.println("Xóa thành công task rùi");
+			return true;
+		}else {
+			System.out.println("Xóa task thất bại rùi");
+			return false;
+		}
+	}
 }

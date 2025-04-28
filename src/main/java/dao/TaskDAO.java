@@ -33,16 +33,25 @@ public class TaskDAO implements DAOInterface<Task>{
 	@Override
 	public boolean delete(Task t) {
 		EntityTransaction tr = em.getTransaction();
-		try {
-			tr.begin();
-			em.remove(t);
-			tr.commit();
-			return true;
-		} catch (Exception ex) {
-			tr.rollback();
-			ex.printStackTrace();
-			return false;
-		}
+	    try {
+	        tr.begin();
+	        
+	        // Xóa các bản ghi liên quan trong bảng task_assignments trước
+	        String deleteAssignmentsQuery = "DELETE FROM TaskAssignment ta WHERE ta.task = :task";
+	        em.createQuery(deleteAssignmentsQuery)
+	          .setParameter("task", t)
+	          .executeUpdate();
+	        
+	        // Sau đó xóa Task
+	        em.remove(t);
+	        
+	        tr.commit();
+	        return true;
+	    } catch (Exception ex) {
+	        if (tr.isActive()) tr.rollback();
+	        ex.printStackTrace();
+	        return false;
+	    }
 	}
 
 	@Override
