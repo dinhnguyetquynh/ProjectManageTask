@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Project;
+import model.User;
+import model.UserProject;
 
 public class ProjectDAO implements DAOInterface<Project>{
 	
@@ -134,6 +136,36 @@ public class ProjectDAO implements DAOInterface<Project>{
 	    } catch (Exception e) {
 	        tr.rollback();
 	        e.printStackTrace();
+	    }
+	}
+	
+	public boolean updateProjectAndUsers(Project project, List<User> newUsers) {
+	    EntityTransaction tr = em.getTransaction();
+	    try {
+	        tr.begin();
+	        
+	        // Update Project
+	        em.merge(project);
+
+	        // Xóa tất cả các user cũ tham gia project này
+	        em.createQuery("DELETE FROM UserProject up WHERE up.project.id = :projectId")
+	            .setParameter("projectId", project.getId())
+	            .executeUpdate();
+
+	        // Thêm mới các user mới vào UserProject
+	        for (User user : newUsers) {
+	            UserProject userProject = new UserProject();
+	            userProject.setUser(em.find(User.class, user.getId())); // nên dùng find để quản lý entity
+	            userProject.setProject(em.find(Project.class, project.getId()));
+	            em.persist(userProject);
+	        }
+
+	        tr.commit();
+	        return true;
+	    } catch (Exception e) {
+	        tr.rollback();
+	        e.printStackTrace();
+	        return false;
 	    }
 	}
 	

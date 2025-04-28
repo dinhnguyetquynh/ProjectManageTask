@@ -147,6 +147,37 @@ public class TaskDAO implements DAOInterface<Task>{
 	        return false;
 	    }
 	}
+	// Cập nhật Task và danh sách người được giao task
+	public boolean updateTaskWithAssignments(Task task, List<User> newAssignees) {
+	    EntityTransaction tr = em.getTransaction();
+	    try {
+	        tr.begin();
+
+	        // Cập nhật lại thông tin task
+	        em.merge(task);
+
+	        // Xóa hết các TaskAssignment cũ liên quan đến task này
+	        String deleteAssignmentsQuery = "DELETE FROM TaskAssignment ta WHERE ta.task = :task";
+	        em.createQuery(deleteAssignmentsQuery)
+	          .setParameter("task", task)
+	          .executeUpdate();
+
+	        // Thêm các TaskAssignment mới
+	        for (User user : newAssignees) {
+	            TaskAssignment assignment = new TaskAssignment();
+	            assignment.setTask(task);
+	            assignment.setEmployee(user);
+	            em.persist(assignment);
+	        }
+
+	        tr.commit();
+	        return true;
+	    } catch (Exception e) {
+	        if (tr.isActive()) tr.rollback();
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 
 
 }

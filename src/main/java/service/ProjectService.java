@@ -5,6 +5,7 @@ import java.util.List;
 import dao.ProjectDAO;
 import jakarta.persistence.EntityManager;
 import model.Project;
+import model.User;
 
 public class ProjectService implements ServiceInterface<Project>{
 	private EntityManager em;
@@ -92,6 +93,17 @@ public class ProjectService implements ServiceInterface<Project>{
 			System.out.println("Xóa project thất bại");
 		}
 		
+	}
+	
+	public boolean updateProjectUser(Project project, List<User> newUsers) {
+		boolean ketqua = pDao.updateProjectAndUsers(project, newUsers);
+		if(ketqua==true) {
+			System.out.println("Cập nhật project thành công");
+			return true;
+		}else {
+			System.out.println("Cập nhật project thất bại");
+			return false;
+		}
 	}
 
 }

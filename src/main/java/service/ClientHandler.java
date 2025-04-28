@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import com.google.gson.Gson;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonValue;
@@ -253,6 +254,49 @@ public class ClientHandler extends Thread {
 			out.println(compactJson3); // Gửi xong xuống dòng
 			out.flush();
 			
+			
+			break;
+		case "UPDATE_PROJECT":
+			Gson gs =  new Gson();
+			System.out.println("Đã nhận được request update project");
+			//Lấy project
+			JsonObject projectObject = joData.getJsonObject("project");
+			Project updatedProject = gs.fromJson(projectObject+"", Project.class);
+			System.out.println("Thông tin project update nhận được là:"+updatedProject);
+			
+			// Lấy list User
+			List<User> listUsers = new ArrayList<>();
+		    for (JsonValue val : joData.getJsonArray("selectedUsers")) {
+		    	JsonObject u = (JsonObject) val;
+		    	User user = gs.fromJson(u+"", User.class);
+		    	listUsers.add(user);
+		    }
+		    
+		    for(User us: listUsers) {
+		    	System.out.println("Thông tin user update là:"+us);
+		    }
+		    
+		    ProjectService pService = new ProjectService(em);
+		    boolean kqUD = pService.updateProjectUser(updatedProject, listUsers);
+		    
+		    //PHẢN HỒI VỀ CLIENT
+		    List<Project> listUpdate = pService.getAllByUser(account.getUser().getId());
+			if(listUpdate!=null) {
+				for(Project pro:listUpdate) {
+					System.out.println("Project tim được là: "+pro.toString());
+				}
+			}else {
+				System.out.println("Danh sach project rong");
+			}
+			
+			String listProjectUD = gs.toJson(listUpdate);
+			
+			
+			ServiceMessage sm1 = ServiceMessage.getInstance();
+			String res7 = sm1.createMessage("LIST_PROJECT", sm1.createObjectJson("listproject", listProjectUD));
+			textArea.append(res7);
+			out.println(res7);
+			out.flush();
 			
 			break;
 			
