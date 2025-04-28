@@ -4,6 +4,7 @@ import java.util.List;
 
 import dao.UserProjectDAO;
 import jakarta.persistence.EntityManager;
+import model.User;
 import model.UserProject;
 
 public class UserProjectService implements ServiceInterface<UserProject> {
@@ -72,6 +73,11 @@ public class UserProjectService implements ServiceInterface<UserProject> {
 		}
 		
 		
+	}
+	
+	//Lấy danh sách user từ project id
+	public List<User> getUserByProject(int id){
+		return upDao.getUserListFromProject(id);
 	}
 	
 

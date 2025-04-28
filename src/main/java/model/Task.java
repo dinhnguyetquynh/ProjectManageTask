@@ -77,6 +77,18 @@ public Task(String title, String description, Priority priority, LocalDateTime c
 	this.parentTask = parentTask;
 }
 
+public Task(String title, String description, Priority priority, LocalDateTime createAt, LocalDateTime dueDate,
+		Status status, Project project) {
+
+	this.title = title;
+	this.description = description;
+	this.priority = priority;
+	this.createAt = createAt;
+	this.dueDate = dueDate;
+	this.status = status;
+	this.project = project;
+}
+
 public int getId() {
 	return id;
 }
@@ -155,6 +167,7 @@ public String toString() {
 			+ ", createAt=" + createAt + ", dueDate=" + dueDate + ", status=" + status + ", project=" + project
 			+ ", parentTask=" + parentTask + "]";
 }
+
 
 	
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import model.User;
 import model.UserProject;
 
 public class UserProjectDAO implements DAOInterface<UserProject>{
@@ -85,5 +86,24 @@ public class UserProjectDAO implements DAOInterface<UserProject>{
 			e.printStackTrace();
 			return null;
 		}
+    }
+    
+    //Lấy danh sách user = projectId
+    public List<User> getUserListFromProject(int projectId) {
+        EntityTransaction tr = em.getTransaction();
+        List<User> users = null;
+        try {
+            tr.begin();
+            String jpql = "SELECT up.user FROM UserProject up WHERE up.project.id = :projectId";
+            users = em.createQuery(jpql, User.class)
+                      .setParameter("projectId", projectId)
+                      .getResultList();
+            tr.commit();
+            return users;
+        } catch (Exception e) {
+            tr.rollback();
+            e.printStackTrace();
+            return null;
+        }
     }
 }

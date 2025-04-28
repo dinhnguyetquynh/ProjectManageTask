@@ -82,6 +82,10 @@ public class UserService implements ServiceInterface<User>{
 			return null;
 		}
 	}
+	
+	public List<User> findListUserByIds(List<Integer> userIds){
+		return userDAO.findUsersByIds(userIds);
+	}
 
 
 }

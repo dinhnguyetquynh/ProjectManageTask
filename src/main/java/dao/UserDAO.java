@@ -95,7 +95,26 @@ public class UserDAO implements DAOInterface<User> {
 		}
 	}
 
-	//Nên viết thêm tìm user bằng tên
+	//Tìm user bằng list<ingteger> ids;
+	public List<User> findUsersByIds(List<Integer> selectedUserIds) {
+	    if (selectedUserIds == null || selectedUserIds.isEmpty()) {
+	        return null;
+	    }
+	    EntityTransaction tr = em.getTransaction();
+	    List<User> users = null;
+	    try {
+	        tr.begin();
+	        users = em.createQuery("SELECT u FROM User u WHERE u.id IN :ids", User.class)
+	                  .setParameter("ids", selectedUserIds)
+	                  .getResultList();
+	        tr.commit();
+	        return users;
+	    } catch (Exception e) {
+	        tr.rollback();
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
 
 	
 }

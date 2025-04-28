@@ -5,6 +5,7 @@ import java.util.List;
 import dao.TaskDAO;
 import jakarta.persistence.EntityManager;
 import model.Task;
+import model.User;
 
 public class TaskService implements ServiceInterface<Task>{
 	private EntityManager em;
@@ -86,5 +87,15 @@ public class TaskService implements ServiceInterface<Task>{
 		}
 	}
 	
+	public boolean createTaskWithAssignments(Task task, List<User> assignees) {
+		boolean kq = taskDao.createTaskWithAssignments(task, assignees);
+		if(kq) {
+			System.out.println("Tạo task thành công");
+			return true;
+		}else {
+			System.out.println("Tạo task thất bại");
+			return false;
+		}
+	}
 
 }

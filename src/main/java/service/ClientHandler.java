@@ -12,6 +12,7 @@ import java.io.StringReader;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTextArea;
@@ -21,6 +22,7 @@ import com.google.gson.Gson;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import jakarta.json.JsonValue;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 import model.Account;
@@ -70,73 +72,7 @@ public class ClientHandler extends Thread {
 					}
 				}
 				
-//				if (receivedObj instanceof Request<?>) {
-//					Request<?> request = (Request<?>) receivedObj;
-//					textArea.append("Nhận từ client: " + request.getMessage() + "\n");
-//					String message = request.getMessage();
-//
-//					// Phản hồi lại Client
-//					switch (message) {
-//					case "LOGIN":
-//						if (request.getData() instanceof Account) {
-//							// Nhận account từ client
-//							Account accReceive = (Account) request.getData();
-//							textArea.append("accountName: " + accReceive.getAccountName() + "\n");
-//	    					textArea.append("password: " + accReceive.getPassword() + "\n");
-//	    					String receivedJson = inR.readLine();
-//	    					Gson gson = new Gson();
-//	    					Message data = gson.fromJson(receivedJson, Message.class);
-//	    					textArea.append(gson.fromJson(data.getData(), Account.class).toString());
-//	    					// Tìm account trong cơ sở dữ liệu
-//	    					// Nếu có trả về thông tin account, ngược lại trả về null
-//							ServiceUser serviceUser = new ServiceUser(em);
-//							Account acc = serviceUser.login(accReceive.getAccountName(), accReceive.getPassword());
-//							if (acc != null) {
-//								Service.getInstance().addClient(acc, out);
-//								this.account = acc;
-//							}
-//							
-//							// Tạo request (hoặc gọi là response) mới để gửi về client
-//							Request<Account> response = new Request<Account>(message, acc);
-//							// Gửi dữ liệu
-//							out.writeObject(response);
-//							out.flush();
-//						} else {
-//							// Gửi request dữ liệu nhận được không hợp lệ
-//						}
-//						break;
-//					
-//					case "REGISTER": // Tạo tài khoản
-//						if (request.getData() instanceof Account) {
-//							// Nhận account từ client
-//							Account accReceive = (Account) request.getData();
-//							textArea.append("accountName: " + accReceive.getAccountName() + "\n");
-//							textArea.append("password: " + accReceive.getPassword() + "\n");
-//							ObjectOutputStream outManager = Service.getInstance().getClientOutputStreamByRole("Manager");
-//							if (outManager != null) {
-//								Request<Account> response = new Request<Account>("REGISTER", accReceive);
-//								// Gửi thông báo đến Manager
-//								outManager.writeObject(response);
-//								outManager.flush();
-//							} else {
-//								textArea.append("Thông báo: Manager không hoạt động" + "\n");
-//							}
-//						}
-//						break;
-//						
-//					case "CREATE_ACCOUNT":
-//						// Nhận account từ client
-//						Account accReceive = (Account) request.getData();
-//						User user = accReceive.getUser();
-//						textArea.append("account: " + accReceive + "\n");
-//						textArea.append("user: " + user + "\n");
-//						ServiceUser serviceUser = new ServiceUser(em);
-//						serviceUser.createAccount(accReceive);
-//						break;
-//					default:
-//						break;
-//					}
-//				}
+
 			}
 
 		} catch (SocketException e) {
@@ -238,6 +174,65 @@ public class ClientHandler extends Thread {
 			String compactJson = res3.replace("\n", "").replace("\r", ""); // Bỏ \n, \r nếu có
 			out.println(compactJson); // Gửi xong xuống dòng
 			out.flush();
+			break;
+		case "LISTS_USER_PROJECT":
+			int projectId1 = joData.getInt("projectId");
+			UserProjectService upService = new UserProjectService(em);
+			List<User> listUser = upService.getUserByProject(projectId1);
+			String listUserJS = GsonHelper.toJson(listUser);
+			
+			String res4 = ServiceMessage.getInstance().createMessage("LISTS_USER_PROJECT",ServiceMessage.getInstance().createObjectJson("listUser", listUserJS));
+			System.out.println("Res4 được in ra la"+res4);
+			String compactJson1 = res4.replace("\n", "").replace("\r", ""); // Bỏ \n, \r nếu có
+			out.println(compactJson1); // Gửi xong xuống dòng
+			out.flush();
+			
+			
+			break;
+			
+		case "CREATE_TASK":
+			  System.out.println("Đã nhận được request create task");
+
+			    // Lấy Task
+			    JsonObject taskObject = joData.getJsonObject("task");
+			    Task newTask = GsonHelper.fromJson(taskObject+"", Task.class);
+			    int projectId2 = newTask.getProject().getId();
+			    System.out.println("Task sau khi chuyển từ Json sang Task là: " + newTask);
+
+			    // Lấy selectedUserIds
+			    List<Integer> selectedUserIds = new ArrayList<>();
+			    for (JsonValue val : joData.getJsonArray("selectedUserIds")) {
+			        selectedUserIds.add(Integer.parseInt(val.toString()));
+			    }
+			    System.out.println("Selected User IDs: " + selectedUserIds);
+			    UserService uSV = new UserService(em);
+			    List<User> users = uSV.findListUserByIds(selectedUserIds);
+			    
+			    TaskService taskSV1 = new TaskService(em);
+			    boolean ketqua = taskSV1.createTaskWithAssignments(newTask, users);
+			    if(ketqua==true) {
+			    	System.out.println("Tạo task thành công");
+			    }else {
+			    	System.out.println("Tạo task thất bại");
+			    }
+			    
+			    //Gửi respone về cho client
+				List<Task> listTask1 = taskSV1.findByProjectId(projectId2);
+				for(Task t : listTask1) {
+					System.out.println("Task is:"+t);
+				}
+				
+				String listTaskJson1 = GsonHelper.toJson(listTask1);
+				
+				String res5 = ServiceMessage.getInstance().createMessage("LIST_TASKS",ServiceMessage.getInstance().createObjectJson("listTask", listTaskJson1));
+				System.out.println("Res3 được in ra la"+res5);
+				String compactJson2 = res5.replace("\n", "").replace("\r", ""); // Bỏ \n, \r nếu có
+				out.println(compactJson2); // Gửi xong xuống dòng
+				out.flush();
+			
+			    
+			
+			
 			break;
 			
 		}

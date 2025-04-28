@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import model.Task;
+import model.TaskAssignment;
+import model.User;
 
 public class TaskDAO implements DAOInterface<Task>{
 	private EntityManager em;
@@ -111,6 +113,31 @@ public class TaskDAO implements DAOInterface<Task>{
 	    }
 	}
 	
-	
+	// Thêm Task và danh sách người được giao task
+	public boolean createTaskWithAssignments(Task task, List<User> assignees) {
+	    EntityTransaction tr = em.getTransaction();
+	    try {
+	        tr.begin();
+
+	        // Lưu task
+	        em.persist(task);
+
+	        // Lưu assignment cho mỗi người
+	        for (User user : assignees) {
+	            TaskAssignment assignment = new TaskAssignment();
+	            assignment.setTask(task);
+	            assignment.setEmployee(user);
+	            em.persist(assignment);
+	        }
+
+	        tr.commit();
+	        return true;
+	    } catch (Exception e) {
+	        if (tr.isActive()) tr.rollback();
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+
 
 }
